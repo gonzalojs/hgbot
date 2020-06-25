@@ -16,6 +16,7 @@ const client = new Snoowrap({
 
 const BOT_START = Date.now() / 1000
 
+// check for botname
 const canSummon = (msg) => {
   return msg && msg.toLowerCase().includes('/u/hgbot')
 }
