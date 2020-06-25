@@ -26,6 +26,7 @@ const comments = new CommentStream(client, {
   limit: 10,
   pollTime: 10000
 })
+
 comments.on('item', (item) => {
   if (item.created_utc < BOT_START) return
   if (!canSummon(item.body)) return

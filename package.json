@@ -2,6 +2,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "snoostorm": "^1.5.0",
-    "snoowrap": "^1.21.0"
+    "snoowrap": "^1.21.0",
+    "x-ray": "^2.3.4"
   }
 }
