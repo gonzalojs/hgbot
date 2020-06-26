@@ -1,6 +1,8 @@
 var Xray = require('x-ray')
 var x = Xray()
 
+
+
 x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
     title: 'b.xcontrast_txt',
     author: 'a:nth-child(5).xcontrast_txt',
@@ -11,6 +13,7 @@ x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
   .then((result) => {
 /*     console.log(result) */
     let numberOfChapters = 0
+    let textChapters = []
     let paragraph = result[0].info.split(' - ')
     paragraph.map(chunk => {
       if (chunk.match(/Chapters:/g)) {
@@ -26,8 +29,11 @@ x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
       x(`https://www.fanfiction.net/s/7750443/${i}/`, '#content_wrapper_inner', [{
         body: 'div.storytext@html'
       }])
-      .then(capitulos => {
-        console.log(i)
+      .then(capitulo => {
+        textChapters[i] = capitulo
+      })
+      .then(() => {
+        console.log(textChapters)
       })
     }
 
