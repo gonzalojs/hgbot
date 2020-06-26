@@ -42,7 +42,7 @@ x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
             title: "Alice's Adventures in Wonderland",
             author: "Lewis Carroll",
             publisher: "Macmillan & Co.", // optional
-            /* cover: "http://demo.com/url-to-cover-image.jpg", */ // Url or File path, both ok.
+            cover: "https://66.media.tumblr.com/b1f728687cd0df45d95837b44df38f6a/tumblr_pmthfoTLQW1qg1e00o1_1280.png", // Url or File path, both ok.
             content: textChapters
           };
 
