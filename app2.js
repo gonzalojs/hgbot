@@ -1,5 +1,6 @@
 var Xray = require('x-ray')
 var x = Xray()
+const Epub = require('epub-gen')
 
 
 
@@ -11,7 +12,7 @@ x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
     body: 'div.storytext@html'
   }])
   .then((result) => {
-/*     console.log(result) */
+    /*     console.log(result) */
     let numberOfChapters = 0
     let textChapters = []
     let paragraph = result[0].info.split(' - ')
@@ -27,14 +28,26 @@ x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
 
     for (let i = 1; i < (numberOfChapters + 1); i++) {
       x(`https://www.fanfiction.net/s/7750443/${i}/`, '#content_wrapper_inner', [{
-        body: 'div.storytext@html'
-      }])
-      .then(capitulo => {
-        textChapters[i - 1] = capitulo[0].body
-      })
-      .then(() => {
-        console.log(textChapters)
-      })
+          body: 'div.storytext@html'
+        }])
+        .then(capitulo => {
+          ch = {
+            data: capitulo[0].body
+          }
+          textChapters[i - 1] = ch
+        })
+        .then(() => {
+          /* console.log(textChapters) */ //funcionando
+          const option = {
+            title: "Alice's Adventures in Wonderland",
+            author: "Lewis Carroll",
+            publisher: "Macmillan & Co.", // optional
+            /* cover: "http://demo.com/url-to-cover-image.jpg", */ // Url or File path, both ok.
+            content: textChapters
+          };
+
+          new Epub(option, './newepub.epub')
+        })
     }
 
   })
