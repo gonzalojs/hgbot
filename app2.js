@@ -30,7 +30,7 @@ x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
         body: 'div.storytext@html'
       }])
       .then(capitulo => {
-        textChapters[i] = capitulo
+        textChapters[i - 1] = capitulo[0].body
       })
       .then(() => {
         console.log(textChapters)
