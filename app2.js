@@ -2,9 +2,11 @@ var Xray = require('x-ray')
 var x = Xray()
 const Epub = require('epub-gen')
 
+let numberOfChapters = 0
+let textChapters = []
+let url = 'https://www.fanfiction.net/s/5677867'
 
-
-x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
+x(url, '#content_wrapper_inner', [{
     title: 'b.xcontrast_txt',
     author: 'a:nth-child(5).xcontrast_txt',
     description: '#profile_top > div',
@@ -13,8 +15,6 @@ x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
   }])
   .then((result) => {
     /*     console.log(result) */
-    let numberOfChapters = 0
-    let textChapters = []
     let paragraph = result[0].info.split(' - ')
     paragraph.map(chunk => {
       if (chunk.match(/Chapters:/g)) {
@@ -27,7 +27,7 @@ x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
     })
 
     for (let i = 1; i < (numberOfChapters + 1); i++) {
-      x(`https://www.fanfiction.net/s/7750443/${i}/`, '#content_wrapper_inner', [{
+      x(`${url}/${i}/`, '#content_wrapper_inner', [{
           body: 'div.storytext@html'
         }])
         .then(capitulo => {
@@ -46,7 +46,7 @@ x('https://www.fanfiction.net/s/7750443/', '#content_wrapper_inner', [{
             content: textChapters
           };
 
-          new Epub(option, './newepub.epub')
+          new Epub(option, 'iii.epub')
         })
     }
 
