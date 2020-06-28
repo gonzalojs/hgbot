@@ -7,7 +7,7 @@ const {
 } = require('snoostorm')
 
 const client = new Snoowrap({
-  userAgent: 'harr-ginny-fanfiction-bot',
+  userAgent: 'web:https://github.com/gonzalojs:v0.0.1',
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
   username: process.env.REDDIT_USER,

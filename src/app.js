@@ -13,7 +13,7 @@ const {
 require('dotenv').config()
 
 const client = new Snoowrap({
-  userAgent: 'harr-ginny-fanfiction-bot',
+  userAgent: 'web:https://github.com/gonzalojs:v0.0.1',
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
   username: process.env.REDDIT_USER,
@@ -24,7 +24,7 @@ const BOT_START = Date.now() / 1000
 
 // check for botname
 const canSummon = (msg) => {
-  return msg && msg.toLowerCase().includes('/u/hgbot')
+  return msg && msg.toLowerCase().includes('hgbotff(')
 }
 
 const comments = new CommentStream(client, {
@@ -36,7 +36,17 @@ const comments = new CommentStream(client, {
 comments.on('item', (item) => {
   if (item.created_utc < BOT_START) return
   if (!canSummon(item.body)) return
-  console.log(item)
+/*   console.log(item.body) */
+
+  let newbody = item.body.split(' ')
+  newbody.map(bit => {
+    if(bit.match(/hgbotff/g)) {
+      console.log(bit.trim())
+    } else {
+      return
+    }
+  })
+
   item.reply('hola mundo!')
 })
 
