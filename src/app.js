@@ -2,7 +2,10 @@ const express = require('express');
 const app = express()
 const path = require('path')
 const morgan = require('morgan');
+const helpers = require('./helpers')
 const bodyParser = require('body-parser')
+helpers.bot.on
+/* 
 const Snoowrap = require('snoowrap')
 const {
   InboxStream,
@@ -36,7 +39,7 @@ const comments = new CommentStream(client, {
 comments.on('item', (item) => {
   if (item.created_utc < BOT_START) return
   if (!canSummon(item.body)) return
-/*   console.log(item.body) */
+
 
   let newbody = item.body.split(' ')
   newbody.map(bit => {
@@ -48,7 +51,7 @@ comments.on('item', (item) => {
   })
 
   item.reply('hola mundo!')
-})
+}) */
 
 
 app.use(express.static('src/public'))
