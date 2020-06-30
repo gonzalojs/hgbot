@@ -4,6 +4,7 @@ const {
   CommentStream,
   SubmissionStream
 } = require('snoostorm')
+const ffn = require('./ffnet')
 
 require('dotenv').config()
 
@@ -27,7 +28,7 @@ const comments = new CommentStream(client, {
   pollTime: 10000
 })
 
-exports.bot = {
+exports.orders = {
   on: comments.on('item', (item) => {
     if (item.created_utc < BOT_START) return
     if (!canSummon(item.body)) return
@@ -37,6 +38,7 @@ exports.bot = {
     newbody.map(bit => {
       if (bit.match(/hgbotff/g)) {
         console.log(bit.trim())
+        ffn.ffnet.get(11111990)
       } else {
         return
       }
