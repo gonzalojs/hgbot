@@ -2,6 +2,8 @@ var Xray = require('x-ray')
 var x = Xray()
 const Epub = require('epub-gen')
 let numberOfChapters = 0
+let titleBook = null
+let author = null
 let textChapters = []
 let url = 'https://www.fanfiction.net/s/'
 
@@ -17,15 +19,20 @@ exports.ffnet = {
       }])
       .then((result) => {
         /*     console.log(result) */
+        titleBook = result[0].title
+        author = result[0].author
+
         let paragraph = result[0].info.split(' - ')
         paragraph.map(chunk => {
           if (chunk.match(/Chapters:/g)) {
             let chapts = chunk.replace('Chapters: ', '')
             let numChapters = parseInt(chapts)
             numberOfChapters = numChapters
-          } else {
             return
           }
+
+          return
+
         })
 
         for (let i = 1; i < (numberOfChapters + 1); i++) {
@@ -41,14 +48,14 @@ exports.ffnet = {
             .then(() => {
               /* console.log(textChapters) */ //funcionando
               const option = {
-                title: "Alice's Adventures in Wonderland",
-                author: "Lewis Carroll",
-                publisher: "Macmillan & Co.", // optional
+                title: titleBook,
+                author: author,
+                publisher: "Fanfiction.net", // optional
                 cover: "https://66.media.tumblr.com/b1f728687cd0df45d95837b44df38f6a/tumblr_pmthfoTLQW1qg1e00o1_1280.png", // Url or File path, both ok.
                 content: textChapters
               };
 
-              new Epub(option, `src/ebooks/${id}.epub`)
+              new Epub(option, `src/ebooks/${titleBook}.epub`)
             })
         }
 
@@ -57,5 +64,4 @@ exports.ffnet = {
         console.error(err)
       });
   }
-
 }
