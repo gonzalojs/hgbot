@@ -37,8 +37,16 @@ exports.orders = {
     let newbody = item.body.split(' ')
     newbody.map(bit => {
       if (bit.match(/hgbotff/g)) {
-        console.log(bit.trim())
-        ffn.ffnet.get(11111990)
+        let book = bit.trim()
+        let book_clean = book.replace('hgbotff(', '')
+        let book_cleanest = book_clean.replace(')', '')
+        let book_number = parseInt(book_cleanest)
+        console.log(book_number)
+        if (!isNaN(book_number)) {
+          ffn.ffnet.get(book_number)
+          return
+        }
+        return
       } else {
         return
       }
