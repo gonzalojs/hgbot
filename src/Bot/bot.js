@@ -5,6 +5,8 @@ const {
   SubmissionStream
 } = require('snoostorm')
 const ffn = require('./ffnet')
+const throttledQueue = require('throttled-queue')
+const throttle = throttledQueue(1, 20000)
 
 require('dotenv').config()
 
@@ -36,22 +38,27 @@ exports.orders = {
 
     let newbody = item.body.split(' ')
     newbody.map(bit => {
-      if (bit.match(/hgbotff/g)) {
-        let book = bit.trim()
-        let book_clean = book.replace('hgbotff(', '')
-        let book_cleanest = book_clean.replace(')', '')
-        let book_number = parseInt(book_cleanest)
-        console.log(book_number)
-        if (!isNaN(book_number)) {
-          ffn.ffnet.get(book_number)
+
+      throttle(function () {
+        // perform some type of activity in here.
+        if (bit.match(/hgbotff/g)) {
+          let book = bit.trim()
+          let book_clean = book.replace('hgbotff(', '')
+          let book_cleanest = book_clean.replace(')', '')
+          let book_number = parseInt(book_cleanest)
+          console.log(book_number)
+          if (!isNaN(book_number)) {
+            ffn.ffnet.get(book_number)
+            return
+          } else {
+            return
+          }
+
+        } else {
           return
         }
-        return
-      } else {
-        return
-      }
+      });
     })
-
     item.reply('hola mundo!')
   })
 }
