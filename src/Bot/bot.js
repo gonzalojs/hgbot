@@ -48,7 +48,8 @@ exports.orders = {
           let book_number = parseInt(book_cleanest)
           console.log(book_number)
           if (!isNaN(book_number)) {
-            ffn.ffnet.get(book_number)
+            let fanfictionName = ffn.ffnet.get(book_number)
+           /*  console.log(fanfictionName) */
             return
           } else {
             return
@@ -59,6 +60,6 @@ exports.orders = {
         }
       });
     })
-    item.reply('hola mundo!')
+/*     item.reply('hola mundo!') */
   })
 }

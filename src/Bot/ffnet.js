@@ -22,6 +22,7 @@ exports.ffnet = {
         titleBook = result[0].title
         author = result[0].author
 
+
         let paragraph = result[0].info.split(' - ')
         paragraph.map(chunk => {
           if (chunk.match(/Chapters:/g)) {
@@ -44,21 +45,19 @@ exports.ffnet = {
                 data: capitulo[0].body
               }
               textChapters[i - 1] = ch
-            })
-            .then(() => {
-              /* console.log(textChapters) */ //funcionando
-              const option = {
-                title: titleBook,
-                author: author,
-                publisher: "Fanfiction.net", // optional
-                cover: "https://66.media.tumblr.com/b1f728687cd0df45d95837b44df38f6a/tumblr_pmthfoTLQW1qg1e00o1_1280.png", // Url or File path, both ok.
-                content: textChapters
-              };
 
-              new Epub(option, `src/ebooks/${titleBook}.epub`)
-                .catch(missing => {
-                  console.log(missing)
-                })
+              if (i === numberOfChapters) {
+                /*                 console.log(numberOfChapters, titleBook, author, textChapters) */
+                const option = {
+                  title: titleBook,
+                  author: author,
+                  publisher: "Fanfiction.net", // optional
+                  cover: "https://66.media.tumblr.com/b1f728687cd0df45d95837b44df38f6a/tumblr_pmthfoTLQW1qg1e00o1_1280.png", // Url or File path, both ok.
+                  content: textChapters
+                };
+                new Epub(option, `src/ebooks/${titleBook}.epub`)
+                return
+              }
             })
         }
 
