@@ -4,12 +4,29 @@ const Epub = require('epub-gen')
 let numberOfChapters = 0
 let titleBook = null
 let author = null
-let textChapters = []
 let url = 'https://www.fanfiction.net/s/'
+let textChapters = []
+
+
+function getAllChapters(params) {
+  for (let i = 1; i < (numberOfChapters + 1); i++) {
+    x(`https://www.fanfiction.net/s/${id}/${i}/`, '#content_wrapper_inner', [{
+        body: 'div.storytext@html'
+      }])
+      .then(capitulo => {
+        ch = {
+          data: capitulo[0].body
+        }
+        textChapters[i - 1] = ch
+        console.log('lalalalalalala')
+      })
+  }
+}
+
 
 exports.ffnet = {
 
-  get: (id) => {
+  get: async (id) => {
     x(`https://www.fanfiction.net/s/${id}`, '#content_wrapper_inner', [{
         title: 'b.xcontrast_txt',
         author: 'a:nth-child(5).xcontrast_txt',
@@ -37,6 +54,8 @@ exports.ffnet = {
         })
       })
       .then(() => {
+        let numeral = 0
+
         for (let i = 1; i < (numberOfChapters + 1); i++) {
           x(`https://www.fanfiction.net/s/${id}/${i}/`, '#content_wrapper_inner', [{
               body: 'div.storytext@html'
@@ -46,18 +65,22 @@ exports.ffnet = {
                 data: capitulo[0].body
               }
               textChapters[i - 1] = ch
+              numeral += 1
+
+              if (numeral == numberOfChapters) {
+                const option = {
+                  title: titleBook,
+                  author: author,
+                  publisher: "Fanfiction.net", // optional
+                  cover: "https://66.media.tumblr.com/b1f728687cd0df45d95837b44df38f6a/tumblr_pmthfoTLQW1qg1e00o1_1280.png", // Url or File path, both ok.
+                  content: textChapters
+                };
+                new Epub(option, `src/ebooks/${titleBook}.epub`)
+              }
             })
         }
-          /*                 console.log(numberOfChapters, titleBook, author, textChapters) */
-          const option = {
-            title: titleBook,
-            author: author,
-            publisher: "Fanfiction.net", // optional
-            cover: "https://66.media.tumblr.com/b1f728687cd0df45d95837b44df38f6a/tumblr_pmthfoTLQW1qg1e00o1_1280.png", // Url or File path, both ok.
-            content: textChapters
-          };
-          new Epub(option, `src/ebooks/${titleBook}.epub`)
-          return
+
+        return textChapters
 
       })
       .catch((err) => {
