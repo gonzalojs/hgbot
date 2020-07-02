@@ -35,7 +35,8 @@ exports.ffnet = {
           return
 
         })
-
+      })
+      .then(() => {
         for (let i = 1; i < (numberOfChapters + 1); i++) {
           x(`https://www.fanfiction.net/s/${id}/${i}/`, '#content_wrapper_inner', [{
               body: 'div.storytext@html'
@@ -45,21 +46,18 @@ exports.ffnet = {
                 data: capitulo[0].body
               }
               textChapters[i - 1] = ch
-
-              if (i === numberOfChapters) {
-                /*                 console.log(numberOfChapters, titleBook, author, textChapters) */
-                const option = {
-                  title: titleBook,
-                  author: author,
-                  publisher: "Fanfiction.net", // optional
-                  cover: "https://66.media.tumblr.com/b1f728687cd0df45d95837b44df38f6a/tumblr_pmthfoTLQW1qg1e00o1_1280.png", // Url or File path, both ok.
-                  content: textChapters
-                };
-                new Epub(option, `src/ebooks/${titleBook}.epub`)
-                return
-              }
             })
         }
+          /*                 console.log(numberOfChapters, titleBook, author, textChapters) */
+          const option = {
+            title: titleBook,
+            author: author,
+            publisher: "Fanfiction.net", // optional
+            cover: "https://66.media.tumblr.com/b1f728687cd0df45d95837b44df38f6a/tumblr_pmthfoTLQW1qg1e00o1_1280.png", // Url or File path, both ok.
+            content: textChapters
+          };
+          new Epub(option, `src/ebooks/${titleBook}.epub`)
+          return
 
       })
       .catch((err) => {
