@@ -7,6 +7,10 @@ const {
 const ffn = require('./ffnet')
 const throttledQueue = require('throttled-queue')
 const throttle = throttledQueue(1, 2000)
+var Xray = require('x-ray')
+var x = Xray()
+const Epub = require('epub-gen')
+
 
 require('dotenv').config()
 
@@ -48,7 +52,97 @@ exports.orders = {
           let book_number = parseInt(book_cleanest)
           console.log(book_number)
           if (!isNaN(book_number)) {
-            console.log(ffn.ffnet.get(book_number))
+            /* console.log(ffn.ffnet.get(book_number)) */
+
+
+
+
+            function get() {
+
+              let numberOfChapters = 0
+              let titleBook = null
+              let author = null
+              let url = 'https://www.fanfiction.net/s/'
+              let textChapters = []
+
+              x(`${url}${book_number}`, '#content_wrapper_inner', [{
+                  title: 'b.xcontrast_txt',
+                  author: 'a:nth-child(5).xcontrast_txt',
+                  description: '#profile_top > div',
+                  info: 'span.xgray',
+                  body: 'div.storytext@html'
+                }])
+                .then((result) => {
+                      console.log(result)
+                  titleBook = result[0].title
+                  author = result[0].author
+
+
+                  let paragraph = result[0].info.split(' - ')
+                  paragraph.map(chunk => {
+                    if (chunk.match(/Chapters:/g)) {
+                      let chapts = chunk.replace('Chapters: ', '')
+                      let numChapters = parseInt(chapts)
+                      numberOfChapters = numChapters
+                      return
+                    }
+
+                    return
+
+                  })
+                })
+                .then(() => {
+                  let numeral = 0
+
+                  for (let i = 1; i < (numberOfChapters + 1); i++) {
+                    x(`https://www.fanfiction.net/s/${book_number}/${i}/`, '#content_wrapper_inner', [{
+                        body: 'div.storytext@html'
+                      }])
+                      .then(capitulo => {
+                        ch = {
+                          data: capitulo[0].body
+                        }
+                        textChapters[i - 1] = ch
+                        numeral += 1
+
+                        if (numeral == numberOfChapters) {
+                          const option = {
+                            title: titleBook,
+                            author: author,
+                            publisher: "Fanfiction.net", // optional
+                            cover: "https://66.media.tumblr.com/b1f728687cd0df45d95837b44df38f6a/tumblr_pmthfoTLQW1qg1e00o1_1280.png", // Url or File path, both ok.
+                            content: textChapters
+                          };
+                          new Epub(option, `src/ebooks/${titleBook}.epub`)
+                          item.reply(titleBook)
+                        }
+                      })
+                  }
+
+                  let datas = {
+                    returned_title: titleBook,
+                    returned_author: author
+                  }
+
+                  return datas
+
+                })
+                .catch((err) => {
+                  console.error(err)
+                });
+            }
+            get()
+
+
+
+
+
+
+
+
+
+
+
             return
           } else {
             return

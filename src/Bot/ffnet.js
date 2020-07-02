@@ -94,7 +94,5 @@ exports.ffnet = {
       .catch((err) => {
         console.error(err)
       });
-
-      return titleBook
   }
 }
