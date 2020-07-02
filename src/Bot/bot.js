@@ -6,7 +6,7 @@ const {
 } = require('snoostorm')
 const ffn = require('./ffnet')
 const throttledQueue = require('throttled-queue')
-const throttle = throttledQueue(1, 20000)
+const throttle = throttledQueue(1, 2000)
 
 require('dotenv').config()
 
@@ -48,18 +48,16 @@ exports.orders = {
           let book_number = parseInt(book_cleanest)
           console.log(book_number)
           if (!isNaN(book_number)) {
-            let fanfictionName = ffn.ffnet.get(book_number)
-           /*  console.log(fanfictionName) */
+            console.log(ffn.ffnet.get(book_number))
             return
           } else {
             return
           }
-
         } else {
           return
         }
       });
     })
-/*     item.reply('hola mundo!') */
+    /*     item.reply('hola mundo!') */
   })
 }

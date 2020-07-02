@@ -1,11 +1,7 @@
 var Xray = require('x-ray')
 var x = Xray()
 const Epub = require('epub-gen')
-let numberOfChapters = 0
-let titleBook = null
-let author = null
-let url = 'https://www.fanfiction.net/s/'
-let textChapters = []
+
 
 
 function getAllChapters(params) {
@@ -26,7 +22,14 @@ function getAllChapters(params) {
 
 exports.ffnet = {
 
-  get: async (id) => {
+  get: (id) => {
+
+    let numberOfChapters = 0
+    let titleBook = null
+    let author = null
+    let url = 'https://www.fanfiction.net/s/'
+    let textChapters = []
+
     x(`https://www.fanfiction.net/s/${id}`, '#content_wrapper_inner', [{
         title: 'b.xcontrast_txt',
         author: 'a:nth-child(5).xcontrast_txt',
@@ -80,11 +83,18 @@ exports.ffnet = {
             })
         }
 
-        return textChapters
+        let datas = {
+          returned_title: titleBook,
+          returned_author: author
+        }
+
+        return datas
 
       })
       .catch((err) => {
         console.error(err)
       });
+
+      return titleBook
   }
 }
