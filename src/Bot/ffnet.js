@@ -56,6 +56,9 @@ exports.ffnet = {
               };
 
               new Epub(option, `src/ebooks/${titleBook}.epub`)
+                .catch(missing => {
+                  console.log(missing)
+                })
             })
         }
 
