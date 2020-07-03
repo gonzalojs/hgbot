@@ -118,30 +118,12 @@ exports.orders = {
                         }
                       })
                   }
-
-                  let datas = {
-                    returned_title: titleBook,
-                    returned_author: author
-                  }
-
-                  return datas
-
                 })
                 .catch((err) => {
                   console.error(err)
                 });
             }
             get()
-
-
-
-
-
-
-
-
-
-
 
             return
           } else {
