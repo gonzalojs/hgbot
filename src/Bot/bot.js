@@ -43,6 +43,8 @@ exports.orders = {
     let newbody = item.body.split(' ')
     newbody.map(bit => {
 
+      // *? Aqui juntar todas las weas y cuando haya terminado el bot de correr, contestar
+
       throttle(function () {
         // perform some type of activity in here.
         if (bit.match(/hgbotff/g)) {
