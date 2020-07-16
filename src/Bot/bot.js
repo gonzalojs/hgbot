@@ -53,10 +53,6 @@ exports.orders = {
           console.log(book_number)
           if (!isNaN(book_number)) {
             /* console.log(ffn.ffnet.get(book_number)) */
-
-
-
-
             function get() {
 
               let numberOfChapters = 0
@@ -73,7 +69,6 @@ exports.orders = {
                   body: 'div.storytext@html'
                 }])
                 .then((result) => {
-                      console.log(result)
                   titleBook = result[0].title
                   author = result[0].author
 
@@ -114,7 +109,18 @@ exports.orders = {
                             content: textChapters
                           };
                           new Epub(option, `src/ebooks/${titleBook}.epub`)
-                          item.reply(titleBook)
+
+                          function post() {
+                            item.reply(titleBook)
+                              .then((success) => {
+                                console.log('se pudo')
+                              }).catch((err) => {
+                                console.log('de nuevo')
+                                setTimeout(post, 60000)
+                              });
+                          }
+
+                          post()
                         }
                       })
                   }
@@ -134,6 +140,5 @@ exports.orders = {
         }
       });
     })
-    /*     item.reply('hola mundo!') */
   })
 }
